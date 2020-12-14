@@ -17,4 +17,6 @@ public class SingleResponseQuestion {
     private String question;
 
     private String answer;
+
+    private String category;
 }

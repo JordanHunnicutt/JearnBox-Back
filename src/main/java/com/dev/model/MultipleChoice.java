@@ -25,4 +25,6 @@ public class MultipleChoice {
     private String answers[];
 
     private String rightAnswer;
+
+    private String category;
 }
