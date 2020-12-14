@@ -29,7 +29,7 @@ public class QuestionServiceTest {
 
     @Test
     void testSave(){
-        SingleResponseQuestion s1 = new SingleResponseQuestion(1,"what is my name","earnest");
+        SingleResponseQuestion s1 = new SingleResponseQuestion(1,"what is my name","earnest","test");
         Mockito.when(sd.save(s1)).thenReturn(s1);
         assertEquals(qs.save(s1),s1);
 
@@ -37,8 +37,8 @@ public class QuestionServiceTest {
 
     @Test
     void testGetQuestions(){
-        SingleResponseQuestion s1 = new SingleResponseQuestion(1,"what is my name","earnest");
-        SingleResponseQuestion s2 = new SingleResponseQuestion(1,"what is my age","22");
+        SingleResponseQuestion s1 = new SingleResponseQuestion(1,"what is my name","earnest","test");
+        SingleResponseQuestion s2 = new SingleResponseQuestion(1,"what is my age","22","test");
         List<SingleResponseQuestion> sList = new ArrayList<>();
         sList.add(s1);
         sList.add(s2);
@@ -49,7 +49,7 @@ public class QuestionServiceTest {
 
     @Test
     void testFindByQuestionId(){
-        SingleResponseQuestion s1 = new SingleResponseQuestion(1,"what is my name","earnest");
+        SingleResponseQuestion s1 = new SingleResponseQuestion(1,"what is my name","earnest","test");
         Mockito.when(sd.findByQuestionId(1)).thenReturn(s1);
         assertEquals(qs.findByQuestionId(1),s1);
     }

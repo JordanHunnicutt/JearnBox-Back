@@ -42,8 +42,8 @@ public class QuestionControllerTest {
 
     @Test
     void testFindAll() throws Exception {
-        SingleResponseQuestion sq1 = new SingleResponseQuestion(1,"what is my name", "Earnest");
-        SingleResponseQuestion sq2 = new SingleResponseQuestion(2, "what is my age","22");
+        SingleResponseQuestion sq1 = new SingleResponseQuestion(1,"what is my name", "Earnest","test");
+        SingleResponseQuestion sq2 = new SingleResponseQuestion(2, "what is my age","22","test");
         List<SingleResponseQuestion> sList = new ArrayList<>();
         sList.add(sq1);
         sList.add(sq2);
@@ -51,6 +51,7 @@ public class QuestionControllerTest {
         this.mockMvc.perform(get("/question").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[*].questionId").value(Matchers.containsInAnyOrder(1,2)))
                 .andExpect(jsonPath("$[*].question").value(Matchers.containsInAnyOrder("what is my name", "what is my age")))
-                .andExpect(jsonPath("$[*].answer").value(Matchers.containsInAnyOrder("Earnest","22")));
+                .andExpect(jsonPath("$[*].answer").value(Matchers.containsInAnyOrder("Earnest","22")))
+                .andExpect(jsonPath("$[*].category").value(Matchers.containsInAnyOrder("test","test")));
     }
 }
