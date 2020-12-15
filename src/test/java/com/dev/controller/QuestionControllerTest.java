@@ -50,8 +50,8 @@ public class QuestionControllerTest {
         Mockito.when(qs.findAll()).thenReturn(sList);
         this.mockMvc.perform(get("/question").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[*].questionId").value(Matchers.containsInAnyOrder(1,2)))
-                .andExpect(jsonPath("$[*].question").value(Matchers.containsInAnyOrder("what is my name", "what is my age")))
-                .andExpect(jsonPath("$[*].answer").value(Matchers.containsInAnyOrder("Earnest","22")))
+                .andExpect(jsonPath("$[*].question").value(Matchers.containsInAnyOrder(sq1.getQuestion(), sq2.getQuestion())))
+                .andExpect(jsonPath("$[*].answer").value(Matchers.containsInAnyOrder(sq1.getAnswer(),sq2.getAnswer())))
                 .andExpect(jsonPath("$[*].category").value(Matchers.containsInAnyOrder("test","test")));
     }
 }
