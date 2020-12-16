@@ -21,5 +21,7 @@ public class Player {
 
     private String name;
 
+    private String playerAnswer;
+
     private int score;
 }
