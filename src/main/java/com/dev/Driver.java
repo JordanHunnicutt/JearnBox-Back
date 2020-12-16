@@ -1,5 +1,6 @@
 package com.dev;
 
+import com.dev.ui.MainMenuUI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Driver {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Driver.class, args);
+//		SpringApplication.run(Driver.class, args);
+		MainMenuUI mu = new MainMenuUI();
+		mu.firstMenu();
 	}
 
 }
