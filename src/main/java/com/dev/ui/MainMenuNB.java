@@ -5,6 +5,10 @@
  */
 package com.dev.ui;
 
+import java.awt.Component;
+import javax.swing.JComponent;
+import com.dev.model.Settings;
+
 /**
  *
  * @author jdh6w
@@ -84,13 +88,42 @@ public class MainMenuNB extends javax.swing.JFrame {
 //        newGameButton.setVisible(false);
 //        this.removeAll();
         System.out.println("removed");
-        LobbySettingsNB lsnb = new LobbySettingsNB();
-        this.add(lsnb);
+        LobbySettingsNB lsnb = new LobbySettingsNB(this);
+        this.setContentPane(lsnb);
+        lsnb.setVisible(true);
+        for(Component c : lsnb.getComponents()){
+            c.setVisible(true);
+        }
 //        this.setVisible(true);
-
+//        String [] stArr = {""};
+//        main(stArr);
 
     }//GEN-LAST:event_newGameButtonActionPerformed
 
+    public void makeInLobbyMenu(LobbySettingsNB lsnb, Settings settings){
+        this.remove(lsnb);
+        InLobbyNB ilnb = new InLobbyNB(settings, this);
+        this.setContentPane(ilnb);
+        ilnb.setVisible(true);
+        for(Component c : ilnb.getComponents()){
+            c.setVisible(true);
+        }
+        this.revalidate();
+        this.repaint();
+    }
+    
+    public void makeInGameMenu(InLobbyNB ilnb, Settings settings){
+        this.remove(ilnb);
+        GameplayNB gnb = new GameplayNB(settings, ilnb.getRoomCode(), ilnb.getPlayers());
+        this.setContentPane(gnb);
+        gnb.setVisible(true);
+        for(Component c : gnb.getComponents()){
+            c.setVisible(true);
+        }
+        this.revalidate();
+        this.repaint();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -118,10 +151,11 @@ public class MainMenuNB extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        System.out.println("main ran");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                System.out.println("run ran");
                 new MainMenuNB().setVisible(true);
             }
         });

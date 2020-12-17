@@ -146,12 +146,24 @@
     <Component class="javax.swing.JTextField" name="categoryField">
     </Component>
     <Component class="javax.swing.JSpinner" name="timeSpinner">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="timeSpinnerStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="playerSpinner">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="playerSpinnerStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="questionSpinner">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="questionSpinnerStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="pointSpinner">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="pointSpinnerStateChanged"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

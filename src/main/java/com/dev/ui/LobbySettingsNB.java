@@ -5,6 +5,8 @@
  */
 package com.dev.ui;
 
+import java.awt.Component;
+import com.dev.model.Settings;
 /**
  *
  * @author jdh6w
@@ -16,6 +18,19 @@ public class LobbySettingsNB extends javax.swing.JPanel {
      */
     public LobbySettingsNB() {
         initComponents();
+        timeSpinner.setValue(30);
+        playerSpinner.setValue(1);
+        questionSpinner.setValue(10);
+        pointSpinner.setValue(1000);
+    }
+    
+    public LobbySettingsNB(MainMenuNB mmnb) {
+        initComponents();
+        timeSpinner.setValue(30);
+        playerSpinner.setValue(1);
+        questionSpinner.setValue(10);
+        pointSpinner.setValue(1000);
+        this.mmnb = mmnb;
     }
 
     /**
@@ -62,6 +77,30 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         openLobbyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openLobbyButtonActionPerformed(evt);
+            }
+        });
+
+        timeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                timeSpinnerStateChanged(evt);
+            }
+        });
+
+        playerSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                playerSpinnerStateChanged(evt);
+            }
+        });
+
+        questionSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                questionSpinnerStateChanged(evt);
+            }
+        });
+
+        pointSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pointSpinnerStateChanged(evt);
             }
         });
 
@@ -129,12 +168,56 @@ public class LobbySettingsNB extends javax.swing.JPanel {
     private void openLobbyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openLobbyButtonActionPerformed
         // TODO add your handling code here:
         //go to next menu
+        Settings settings = new Settings();
+        settings.setPlayerCount((Integer)(playerSpinner.getValue()));
+        settings.setCategory(categoryField.getText());
+        settings.setNumQuestions((Integer)(questionSpinner.getValue()));
+        settings.setTime((Integer)(timeSpinner.getValue()));
+        settings.setPoints((Integer)(pointSpinner).getValue());
+        removeCustomComponents();
+        mmnb.makeInLobbyMenu(this, settings);
     }//GEN-LAST:event_openLobbyButtonActionPerformed
 
-    public LobbySettingsNB getLSNB(){
-        initComponents();
-        return this;
-    }
+    private void timeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_timeSpinnerStateChanged
+        // TODO add your handling code here:
+        Integer timeVal = (Integer)(timeSpinner.getValue());
+        if(timeVal < 1){
+            timeSpinner.setValue(1);
+        } else if(timeVal > 90){
+            timeSpinner.setValue(90);
+        }
+    }//GEN-LAST:event_timeSpinnerStateChanged
+
+    private void playerSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_playerSpinnerStateChanged
+        // TODO add your handling code here:
+        Integer playerVal = (Integer)(playerSpinner.getValue());
+        if(playerVal < 1){
+            playerSpinner.setValue(1);
+        } else if(playerVal > 8){
+            playerSpinner.setValue(8);
+        }
+    }//GEN-LAST:event_playerSpinnerStateChanged
+
+    private void questionSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_questionSpinnerStateChanged
+        // TODO add your handling code here:
+        Integer numQs = (Integer)(questionSpinner.getValue());
+        if(numQs < 1){
+            questionSpinner.setValue(1);
+        } else if(numQs > 100){
+            questionSpinner.setValue(100);
+        }
+    }//GEN-LAST:event_questionSpinnerStateChanged
+
+    private void pointSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pointSpinnerStateChanged
+        // TODO add your handling code here:
+        Integer points = (Integer)(pointSpinner.getValue());
+        if(points < 1){
+            pointSpinner.setValue(1);
+        } else if(points > 10000){
+            pointSpinner.setValue(10000);
+        }
+    }//GEN-LAST:event_pointSpinnerStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField categoryField;
@@ -150,4 +233,24 @@ public class LobbySettingsNB extends javax.swing.JPanel {
     private javax.swing.JSpinner timeSpinner;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    private MainMenuNB mmnb;
+    
+    private void removeCustomComponents(){
+        this.remove(categoryField);
+        this.remove(categoryLabel);
+        this.remove(openLobbyButton);
+        this.remove(playerLabel);
+        this.remove(playerSpinner);
+        this.remove(pointLabel);
+        this.remove(pointSpinner);
+        this.remove(questionLabel);
+        this.remove(questionSpinner);
+        this.remove(timeLabel);
+        this.remove(timeSpinner);
+        this.remove(titleLabel);
+
+            
+    }
+    
 }
+

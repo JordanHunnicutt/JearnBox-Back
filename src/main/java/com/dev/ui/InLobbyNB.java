@@ -5,6 +5,9 @@
  */
 package com.dev.ui;
 
+import com.dev.model.Settings;
+import java.util.List;
+
 /**
  *
  * @author jdh6w
@@ -16,6 +19,25 @@ public class InLobbyNB extends javax.swing.JPanel {
      */
     public InLobbyNB() {
         initComponents();
+    }
+    
+    public InLobbyNB(Settings settings, MainMenuNB mmnb){
+        initComponents();
+        
+        String randomCode = ((Integer)(Math.round(Math.round(Math.random() * 999999)))).toString();
+        
+        roomCodeValue.setText(randomCode);
+        
+        heldSettings = settings;
+        this.mmnb = mmnb;
+        numPlayersLabel.setText("Max Players: "+settings.getPlayerCount());
+        if(settings.getCategory().isEmpty()){
+            settings.setCategory("All");
+        }
+        categoryLabel.setText("Category: "+settings.getCategory());
+        numQuestionsLabel.setText(settings.getNumQuestions()+" Questions");
+        timeLabel.setText(settings.getTime()+" seconds per question");
+        pointsLabel.setText("Points to Win: "+settings.getPoints());
     }
 
     /**
@@ -32,12 +54,12 @@ public class InLobbyNB extends javax.swing.JPanel {
         roomCodeValue = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         playerList = new javax.swing.JList<>();
-        jLabel1 = new javax.swing.JLabel();
+        numPlayersLabel = new javax.swing.JLabel();
         roomCodeButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        categoryLabel = new javax.swing.JLabel();
+        numQuestionsLabel = new javax.swing.JLabel();
+        timeLabel = new javax.swing.JLabel();
+        pointsLabel = new javax.swing.JLabel();
         startGameButton = new javax.swing.JButton();
         playerListLabel = new javax.swing.JLabel();
 
@@ -62,15 +84,10 @@ public class InLobbyNB extends javax.swing.JPanel {
         roomCodeValue.setText("123456");
 
         playerList.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
-        playerList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(playerList);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Max Players: 8");
+        numPlayersLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        numPlayersLabel.setText("Max Players: 8");
 
         roomCodeButton.setText("Toggle Room Code Hidden");
         roomCodeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -79,19 +96,24 @@ public class InLobbyNB extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("Category: All");
+        categoryLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        categoryLabel.setText("Category: All");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Number of Questions: 10");
+        numQuestionsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        numQuestionsLabel.setText("Number of Questions: 10");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setText("30 seconds per question");
+        timeLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        timeLabel.setText("30 seconds per question");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Points to Win: 10000");
+        pointsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        pointsLabel.setText("Points to Win: 10000");
 
         startGameButton.setText("Start the Game!");
+        startGameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startGameButtonActionPerformed(evt);
+            }
+        });
 
         playerListLabel.setLabelFor(playerList);
         playerListLabel.setText("Players:");
@@ -109,12 +131,12 @@ public class InLobbyNB extends javax.swing.JPanel {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(numPlayersLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(roomCodeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(categoryLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(numQuestionsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                            .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pointsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(296, 296, 296)
                         .addComponent(startGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -137,16 +159,16 @@ public class InLobbyNB extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(roomCodeButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(numPlayersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(categoryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(numQuestionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53))
+                        .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pointsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(playerListLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -163,20 +185,38 @@ public class InLobbyNB extends javax.swing.JPanel {
         roomCodeValue.setVisible(!roomCodeValue.isVisible());
     }//GEN-LAST:event_roomCodeButtonActionPerformed
 
+    private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
+        // TODO add your handling code here:
+        //start the game
+        mmnb.makeInGameMenu(this, heldSettings);
+    }//GEN-LAST:event_startGameButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel categoryLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel numPlayersLabel;
+    private javax.swing.JLabel numQuestionsLabel;
     private javax.swing.JList<String> playerList;
     private javax.swing.JLabel playerListLabel;
+    private javax.swing.JLabel pointsLabel;
     private javax.swing.JButton roomCodeButton;
     private javax.swing.JLabel roomCodeLabel;
     private javax.swing.JLabel roomCodeValue;
     private javax.swing.JButton startGameButton;
+    private javax.swing.JLabel timeLabel;
     // End of variables declaration//GEN-END:variables
+    private Settings heldSettings;
+    private MainMenuNB mmnb;
+    private List<String> players;
+    
+    public String getRoomCode(){
+        return roomCodeValue.getText();
+    }
+    
+    public List<String> getPlayers(){
+        return players;
+    }
+    
 }

@@ -1,5 +1,6 @@
 package com.dev;
 
+import com.dev.ui.LobbySettingsNB;
 import com.dev.ui.MainMenuNB;
 import com.dev.ui.MainMenuUI;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +14,7 @@ public class Driver {
 //		MainMenuUI mu = new MainMenuUI();
 //		mu.firstMenu();
 		MainMenuNB mmnb = new MainMenuNB();
-		mmnb.setVisible(true);
+		mmnb.main(args);
 	}
 
 }
