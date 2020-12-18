@@ -21,7 +21,9 @@ public class Player {
 
     private String name;
 
-    private String playerAnswer;
+    private int roomCode;
 
-    private int score;
+    //private String playerAnswer;
+
+    //private int score;
 }
