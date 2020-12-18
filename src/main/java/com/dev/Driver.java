@@ -1,5 +1,6 @@
 package com.dev;
 
+import com.dev.ui.MainMenuNB;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,9 @@ public class Driver {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Driver.class, args);
+		System.setProperty("java.awt.headless","false");
+		MainMenuNB mmnb = new MainMenuNB();
+		mmnb.main(args);
 	}
 
 	@Bean
