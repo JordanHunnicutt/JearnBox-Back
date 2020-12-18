@@ -42,10 +42,10 @@ public class InLobbyNB extends javax.swing.JPanel {
     public void addPlayer(Player p){
         DefaultListModel dml = new DefaultListModel();
         if(players.size() < heldSettings.getPlayerCount()) {
-            players.add(p.getName());
+            players.add(p);
         }
-        for (String s : players){
-            dml.addElement(s);
+        for (Player player : players){
+            dml.addElement(player.getName());
         }
         playerList.setModel(dml);
     }
@@ -61,7 +61,11 @@ public class InLobbyNB extends javax.swing.JPanel {
         initComponents();
         
         String randomCode = ((Integer)(Math.round(Math.round(Math.random() * 999999)))).toString();
-        
+
+        while(Integer.parseInt(randomCode) < 100000){
+            randomCode = ((Integer)(Math.round(Math.round(Math.random() * 999999)))).toString();
+        }
+
         roomCodeValue.setText(randomCode);
         
         heldSettings = settings;
@@ -245,13 +249,13 @@ public class InLobbyNB extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     private Settings heldSettings;
     private MainMenuNB mmnb;
-    private List<String> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     
     public String getRoomCode(){
         return roomCodeValue.getText();
     }
     
-    public List<String> getPlayers(){
+    public List<Player> getPlayers(){
         return players;
     }
     

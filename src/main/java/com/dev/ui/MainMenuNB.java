@@ -6,7 +6,9 @@
 package com.dev.ui;
 
 import java.awt.Component;
-import javax.swing.JComponent;
+import java.util.concurrent.TimeUnit;
+import javax.swing.*;
+
 import com.dev.model.Settings;
 
 /**
@@ -82,12 +84,8 @@ public class MainMenuNB extends javax.swing.JFrame {
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
         // TODO add your handling code here:
         //go to next menu
-//        this.setVisible(false);
         this.remove(titleLabel);
         this.remove(newGameButton);
-//        titleLabel.setVisible(false);
-//        newGameButton.setVisible(false);
-//        this.removeAll();
         System.out.println("removed");
         LobbySettingsNB lsnb = new LobbySettingsNB(this);
         this.setContentPane(lsnb);
@@ -95,10 +93,6 @@ public class MainMenuNB extends javax.swing.JFrame {
         for(Component c : lsnb.getComponents()){
             c.setVisible(true);
         }
-//        this.setVisible(true);
-//        String [] stArr = {""};
-//        main(stArr);
-
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     public void makeInLobbyMenu(LobbySettingsNB lsnb, Settings settings){
@@ -123,6 +117,13 @@ public class MainMenuNB extends javax.swing.JFrame {
         }
         this.revalidate();
         this.repaint();
+        System.out.println("right before invoke later");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                gnb.intro();
+            }
+        });
     }
     
     /**
