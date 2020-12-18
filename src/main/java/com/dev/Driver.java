@@ -1,8 +1,6 @@
 package com.dev;
 
-import com.dev.ui.LobbySettingsNB;
 import com.dev.ui.MainMenuNB;
-import com.dev.ui.MainMenuUI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
