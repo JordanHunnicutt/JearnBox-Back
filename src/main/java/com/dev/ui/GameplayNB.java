@@ -132,6 +132,12 @@ public class GameplayNB extends javax.swing.JPanel {
 
     public void countdownTimer() {
 
+        if(responsesReceived >= heldPlayers.size()){
+            timeValue = 0;
+            timerLabel.setText(timeValue.toString());
+            responsesReceived = 0;
+        }
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -262,4 +268,5 @@ public class GameplayNB extends javax.swing.JPanel {
     private List<Player> heldPlayers = new ArrayList<>();
     private Integer timeValue = 1;
     private Integer currentQNumber = 1;
+    private Integer responsesReceived = 0;
 }
