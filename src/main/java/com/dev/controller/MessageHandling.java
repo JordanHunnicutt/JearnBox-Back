@@ -2,6 +2,7 @@ package com.dev.controller;
 
 import com.dev.model.Greeting;
 import com.dev.model.Player;
+import com.dev.ui.InLobbyNB;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -26,8 +27,16 @@ public class MessageHandling {
     @MessageMapping("/join")
     @SendTo("/game/players")
     public String playerJoin(@Payload Player p) throws Exception{
-//        p.getRoomCode();
+        InLobbyNB ilnb = InLobbyNB.getInLobbyInstance();
         System.out.println(p.toString());
-        return ("Hello " + p.getName()+" welcome to the lobby");
+        if(p.getRoomCode() == ilnb.getRoomCodeValue()){
+            System.out.println("Made it to the room");
+            ilnb.addPlayer(p);
+            return ("Hello " + p.getName()+" welcome to the lobby");
+        } else{
+            System.out.println("Didn't make it");
+            return "Invalid room code";
+        }
+
     }
 }
