@@ -20,6 +20,7 @@ public class MainMenuNB extends javax.swing.JFrame {
      */
     public MainMenuNB() {
         initComponents();
+        this.setResizable(false);
     }
 
     /**
@@ -102,7 +103,7 @@ public class MainMenuNB extends javax.swing.JFrame {
 
     public void makeInLobbyMenu(LobbySettingsNB lsnb, Settings settings){
         this.remove(lsnb);
-        InLobbyNB ilnb = new InLobbyNB(settings, this);
+        InLobbyNB ilnb = InLobbyNB.getInLobbyInstance(settings, this);
         this.setContentPane(ilnb);
         ilnb.setVisible(true);
         for(Component c : ilnb.getComponents()){

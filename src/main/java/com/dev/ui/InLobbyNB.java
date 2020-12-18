@@ -5,7 +5,11 @@
  */
 package com.dev.ui;
 
+import com.dev.model.Player;
 import com.dev.model.Settings;
+
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +17,38 @@ import java.util.List;
  * @author jdh6w
  */
 public class InLobbyNB extends javax.swing.JPanel {
+
+    private static InLobbyNB instance = null;
+
+    public static InLobbyNB getInLobbyInstance(Settings settings, MainMenuNB mmnb){
+        if(instance == null){
+            instance = new InLobbyNB(settings, mmnb);
+        }
+        return instance;
+    }
+
+    public static InLobbyNB getInLobbyInstance(){
+        if(instance == null){
+            instance = new InLobbyNB();
+        }
+        return instance;
+    }
+
+    public Integer getRoomCodeValue(){
+        Integer value = Integer.parseInt(roomCodeValue.getText());
+        return value;
+    }
+
+    public void addPlayer(Player p){
+        DefaultListModel dml = new DefaultListModel();
+        if(players.size() < heldSettings.getPlayerCount()) {
+            players.add(p.getName());
+        }
+        for (String s : players){
+            dml.addElement(s);
+        }
+        playerList.setModel(dml);
+    }
 
     /**
      * Creates new form InLobbyNB
@@ -209,7 +245,7 @@ public class InLobbyNB extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     private Settings heldSettings;
     private MainMenuNB mmnb;
-    private List<String> players;
+    private List<String> players = new ArrayList<>();
     
     public String getRoomCode(){
         return roomCodeValue.getText();

@@ -18,7 +18,7 @@ public class Driver {
 	}
 
 	@Bean
-	public WebMvcConfigurer corsConfiguerer(){
+	public WebMvcConfigurer corsConfigurer(){
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
