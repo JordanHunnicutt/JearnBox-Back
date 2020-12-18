@@ -13,9 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class Driver {
 
 	public static void main(String[] args) {
-//		SpringApplication.run(Driver.class, args);
-//		MainMenuUI mu = new MainMenuUI();
-//		mu.firstMenu();
+		SpringApplication.run(Driver.class, args);
+		System.setProperty("java.awt.headless","false");
 		MainMenuNB mmnb = new MainMenuNB();
 		mmnb.main(args);
 	}
