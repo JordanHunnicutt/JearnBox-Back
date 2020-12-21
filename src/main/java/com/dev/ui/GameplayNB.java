@@ -7,6 +7,7 @@ package com.dev.ui;
 
 import com.dev.model.Player;
 import com.dev.model.Settings;
+import com.dev.model.SingleResponseQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class GameplayNB extends javax.swing.JPanel {
         playerList.setModel(dml);
         timerLabel.setText(settings.getTime().toString());
         timeValue = settings.getTime();
+
     }
 
     public void intro() {
@@ -70,16 +72,16 @@ public class GameplayNB extends javax.swing.JPanel {
     public String printQuestion() {
         String q = "This is a test to see how long we can make the question with it still showing everything on screen";
         int questionLength = q.length();
-        String qWithLines = "";
+        StringBuilder qWithLines = new StringBuilder("<html>");
         while(questionLength > 30){
-            qWithLines.concat(q.substring(0,30));
-            qWithLines.concat("\n");
+            qWithLines.append(q.substring(0,30));
+            qWithLines.append("<br/>");
             q = q.substring(30);
             questionLength = q.length();
         }
-        qWithLines.concat(q);
-
-        return "Print question ran";
+        qWithLines.append(q);
+        qWithLines.append("</html>");
+        return qWithLines.toString();
     }
 
 
@@ -226,7 +228,6 @@ public class GameplayNB extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(questionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(qNumLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -235,12 +236,13 @@ public class GameplayNB extends javax.swing.JPanel {
                         .addComponent(roomCodeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(roomCodeValue))
+                    .addComponent(timerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(playerListLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(timerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(questionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(playerListLabel)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -280,4 +282,5 @@ public class GameplayNB extends javax.swing.JPanel {
     private Integer timeValue = 1;
     private Integer currentQNumber = 1;
     private Integer responsesReceived = 0;
+    private List<SingleResponseQuestion> questionList = new ArrayList<>();
 }
