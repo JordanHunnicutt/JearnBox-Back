@@ -5,12 +5,15 @@
  */
 package com.dev.ui;
 
+import com.dev.model.Player;
 import com.dev.model.Settings;
+
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
+import javax.swing.*;
+import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author jdh6w
  */
 public class GameplayNB extends javax.swing.JPanel {
@@ -21,22 +24,150 @@ public class GameplayNB extends javax.swing.JPanel {
     public GameplayNB() {
         initComponents();
     }
-    
-    public GameplayNB(Settings settings, String roomCode, List<String> players) {
+
+    public GameplayNB(Settings settings, String roomCode, List<Player> players) {
         initComponents();
         heldSettings = settings;
+        heldPlayers = players;
         roomCodeValue.setText(roomCode);
         DefaultListModel dml = new DefaultListModel();
-        try{
-            for (String p : players){
-            dml.addElement(p);
+        if (!players.isEmpty()) {
+            for (Player p : players) {
+                dml.addElement(p.getName());
             }
-        } catch(NullPointerException e){
+        } else {
             dml.addElement("No players found");
+            players.add(new Player(1, "No players found", 123456));
         }
-        
+
         playerList.setModel(dml);
         timerLabel.setText(settings.getTime().toString());
+        timeValue = settings.getTime();
+    }
+
+    public void intro() {
+        System.out.println("intro started");
+        questionLabel.setText("Get ready for the next question!");
+        timeValue = heldSettings.getTime();
+        timerLabel.setText(heldSettings.getTime().toString());
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("timer done");
+                questionLabel.setText(printQuestion());
+                countdownTimer();
+            }
+        });
+
+
+    }
+
+    public String printQuestion() {
+        String q = "This is a test to see how long we can make the question with it still showing everything on screen";
+        int questionLength = q.length();
+        String qWithLines = "";
+        while(questionLength > 30){
+            qWithLines.concat(q.substring(0,30));
+            qWithLines.concat("\n");
+            q = q.substring(30);
+            questionLength = q.length();
+        }
+        qWithLines.concat(q);
+
+        return "Print question ran";
+    }
+
+
+    public void showAnswer() {
+        questionLabel.setText("The answer is: ");
+        timerLabel.setText("No");
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (currentQNumber < heldSettings.getNumQuestions()) {
+                    currentQNumber++;
+                    qNumValue.setText(currentQNumber.toString());
+                    intro();
+                } else {
+                    outro();
+                }
+            }
+        });
+    }
+
+
+    public void outro() {
+        questionLabel.setText("That was the last question!");
+        timerLabel.setText("Tallying results...");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                questionLabel.setText("The winner is " + (heldPlayers.get(0).getName()) + "!");
+                timerLabel.setText("Thanks for playing!");
+                endApp();
+            }
+        });
+
+    }
+
+    public void endApp() {
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.exit(0);
+            }
+        });
+    }
+
+    public void countdownTimer() {
+
+        if(responsesReceived >= heldPlayers.size()){
+            timeValue = 0;
+            timerLabel.setText(timeValue.toString());
+            responsesReceived = 0;
+        }
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                timeValue--;
+                timerLabel.setText(timeValue.toString());
+                if (timeValue > 0) {
+                    countdownTimer();
+                } else {
+                    showAnswer();
+                }
+            }
+        });
+
+
     }
 
     /**
@@ -75,6 +206,7 @@ public class GameplayNB extends javax.swing.JPanel {
         playerListLabel.setText("Players:");
 
         questionLabel.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        questionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         questionLabel.setText("Is Java Purely OOP?");
 
         timerLabel.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
@@ -92,9 +224,10 @@ public class GameplayNB extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
+                    .addComponent(questionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(qNumLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(qNumValue)
@@ -103,21 +236,12 @@ public class GameplayNB extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(roomCodeValue))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(playerListLabel)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(200, 200, 200)
-                                .addComponent(questionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 159, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(playerListLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(timerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(324, 324, 324)
-                .addComponent(timerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,15 +251,15 @@ public class GameplayNB extends javax.swing.JPanel {
                     .addComponent(roomCodeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(qNumLabel)
                     .addComponent(qNumValue))
-                .addGap(69, 69, 69)
-                .addComponent(questionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(timerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(questionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(timerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
                 .addComponent(playerListLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -152,4 +276,8 @@ public class GameplayNB extends javax.swing.JPanel {
     private javax.swing.JLabel timerLabel;
     // End of variables declaration//GEN-END:variables
     private Settings heldSettings;
+    private List<Player> heldPlayers = new ArrayList<>();
+    private Integer timeValue = 1;
+    private Integer currentQNumber = 1;
+    private Integer responsesReceived = 0;
 }
