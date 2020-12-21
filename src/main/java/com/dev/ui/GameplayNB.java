@@ -37,7 +37,7 @@ public class GameplayNB extends javax.swing.JPanel {
             }
         } else {
             dml.addElement("No players found");
-            players.add(new Player(1, "Jordan", 123456));
+            players.add(new Player(1, "No players found", 123456));
         }
 
         playerList.setModel(dml);
@@ -68,6 +68,17 @@ public class GameplayNB extends javax.swing.JPanel {
     }
 
     public String printQuestion() {
+        String q = "This is a test to see how long we can make the question with it still showing everything on screen";
+        int questionLength = q.length();
+        String qWithLines = "";
+        while(questionLength > 30){
+            qWithLines.concat(q.substring(0,30));
+            qWithLines.concat("\n");
+            q = q.substring(30);
+            questionLength = q.length();
+        }
+        qWithLines.concat(q);
+
         return "Print question ran";
     }
 
