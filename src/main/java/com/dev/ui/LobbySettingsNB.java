@@ -7,16 +7,26 @@ package com.dev.ui;
 
 import java.awt.Component;
 import com.dev.model.Settings;
+import java.util.Set;
 /**
  *
  * @author jdh6w
  */
 public class LobbySettingsNB extends javax.swing.JPanel {
 
+    private static LobbySettingsNB instance = null;
+    
+    public static LobbySettingsNB getLobbySettingsInstance(MainMenuNB mmnb){
+        if(instance == null){
+            instance = new LobbySettingsNB(mmnb);
+        }
+        return instance;
+    }    
+    
     /**
      * Creates new form LobbySettingsNB
      */
-    public LobbySettingsNB() {
+    private LobbySettingsNB() {
         initComponents();
         timeSpinner.setValue(30);
         playerSpinner.setValue(1);
@@ -24,7 +34,7 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         pointSpinner.setValue(1000);
     }
     
-    public LobbySettingsNB(MainMenuNB mmnb) {
+    private LobbySettingsNB(MainMenuNB mmnb) {
         initComponents();
         timeSpinner.setValue(30);
         playerSpinner.setValue(1);
@@ -42,6 +52,7 @@ public class LobbySettingsNB extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBox1 = new javax.swing.JCheckBox();
         titleLabel = new javax.swing.JLabel();
         timeLabel = new javax.swing.JLabel();
         playerLabel = new javax.swing.JLabel();
@@ -54,6 +65,9 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         playerSpinner = new javax.swing.JSpinner();
         questionSpinner = new javax.swing.JSpinner();
         pointSpinner = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
+
+        jCheckBox1.setText("jCheckBox1");
 
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -104,6 +118,13 @@ public class LobbySettingsNB extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("Select Multiple");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,16 +144,17 @@ public class LobbySettingsNB extends javax.swing.JPanel {
                                     .addComponent(timeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(questionSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(pointSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(categoryField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(timeSpinner))
-                                    .addComponent(playerSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(questionSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(pointSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(categoryField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(timeSpinner)
+                                    .addComponent(playerSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(296, 296, 296)
                         .addComponent(openLobbyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,10 +177,15 @@ public class LobbySettingsNB extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pointSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pointLabel))
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(categoryLabel)
-                    .addComponent(categoryField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(categoryLabel)
+                            .addComponent(categoryField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(openLobbyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(27, Short.MAX_VALUE))
@@ -218,10 +245,17 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_pointSpinnerStateChanged
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        mmnb.makeCategoryMenu(this);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField categoryField;
     private javax.swing.JLabel categoryLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JButton openLobbyButton;
     private javax.swing.JLabel playerLabel;
     private javax.swing.JSpinner playerSpinner;
@@ -252,5 +286,15 @@ public class LobbySettingsNB extends javax.swing.JPanel {
             
     }
     
+    public void multipleCategories(Set<String> categories){
+        StringBuilder holder = new StringBuilder("");
+        for(String s : categories){
+            holder.append(s);
+            holder.append(", ");
+        }
+        holder.deleteCharAt(holder.length()-2);
+        categoryField.setText(holder.toString());
+        categoryField.setEnabled(false);
+    }
 }
 

@@ -87,7 +87,7 @@ public class MainMenuNB extends javax.swing.JFrame {
         this.remove(titleLabel);
         this.remove(newGameButton);
         System.out.println("removed");
-        LobbySettingsNB lsnb = new LobbySettingsNB(this);
+        LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this);
         this.setContentPane(lsnb);
         lsnb.setVisible(true);
         for(Component c : lsnb.getComponents()){
@@ -117,13 +117,39 @@ public class MainMenuNB extends javax.swing.JFrame {
         }
         this.revalidate();
         this.repaint();
-        System.out.println("right before invoke later");
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 gnb.intro();
             }
         });
+    }
+    
+    public void makeCategoryMenu(LobbySettingsNB lsnb){
+        this.remove(lsnb);
+        CategorySelector cs = new CategorySelector(this);
+        this.setContentPane(cs);
+        cs.setVisible(true);
+        for(Component c : cs.getComponents()){
+            c.setVisible(true);
+        }
+        this.revalidate();
+        this.repaint();
+    }
+    
+    public void backToLobbySettings(CategorySelector cs){
+        this.remove(cs);
+        LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this);
+        if(!cs.getSelectedCategories().isEmpty()){
+            lsnb.multipleCategories(cs.getSelectedCategories());
+        }
+        this.setContentPane(lsnb);
+        lsnb.setVisible(true);
+        for(Component c : lsnb.getComponents()){
+            c.setVisible(true);
+        }
+        this.revalidate();
+        this.repaint();
     }
     
     /**
