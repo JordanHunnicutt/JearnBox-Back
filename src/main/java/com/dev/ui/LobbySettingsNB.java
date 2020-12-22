@@ -13,8 +13,16 @@ import java.util.Set;
  */
 public class LobbySettingsNB extends javax.swing.JPanel {
 
+    /**
+     * This field is used to make this class a singleton, which keeps settings when loading the CategorySelector component.
+     */
     private static LobbySettingsNB instance = null;
-    
+
+    /**
+     * This method returns an instance of the class, and makes a new one if it does not already exist.
+     * @param mmnb - MainMenuNB component. Used to call methods to remove this component.
+     * @return - an instance of LobbySettingsNB
+     */
     public static LobbySettingsNB getLobbySettingsInstance(MainMenuNB mmnb){
         if(instance == null){
             instance = new LobbySettingsNB(mmnb);
@@ -22,6 +30,10 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         return instance;
     }
 
+    /**
+     * This method returns an instance of the class, and makes a new one if it does not already exist.
+     * @return - an instance of LobbySettingsNB
+     */
     public static LobbySettingsNB getLobbySettingsInstance(){
         if(instance == null){
             instance = new LobbySettingsNB();
@@ -29,6 +41,11 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         return instance;
     }
 
+    /**
+     * This method is called in the testing suite to destroy the instance of this class.
+     * We destroy it so we can create two instances, one using the no args constructor,
+     * one using the constructor that takes in a MainMenuNB.
+     */
     public static void killInstance(){
         instance = null;
     }
@@ -43,7 +60,11 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         questionSpinner.setValue(10);
         pointSpinner.setValue(1000);
     }
-    
+
+    /**
+     * Creates new form LobbySettingsNB
+     * @param mmnb - MainMenuNB component. Used to remove this form later.
+     */
     private LobbySettingsNB(MainMenuNB mmnb) {
         initComponents();
         timeSpinner.setValue(30);
@@ -202,6 +223,12 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This method is called when hitting the button to open the lobby. It is used to create a Settings object
+     * that holds the values set by the spinners and field, remove its inner components, and pass info to the MainMenuNB component
+     * to render the InLobbyNB component.
+     * @param evt - ActionEvent from hitting the Open Lobby button. Holds info about the source and more.
+     */
     private void openLobbyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openLobbyButtonActionPerformed
         // TODO add your handling code here:
         //go to next menu
@@ -215,6 +242,10 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         mmnb.makeInLobbyMenu(this, settings);
     }//GEN-LAST:event_openLobbyButtonActionPerformed
 
+    /**
+     * This method is called when the timeSpinner value changes. It is used to prevent the time per question from being too high or low.
+     * @param evt - ActionEvent from changing the spinner. Holds info about the source and more.
+     */
     private void timeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_timeSpinnerStateChanged
         // TODO add your handling code here:
         Integer timeVal = (Integer)(timeSpinner.getValue());
@@ -225,6 +256,10 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_timeSpinnerStateChanged
 
+    /**
+     * This method is called when the playerSpinner value changes. It is used to prevent the number of players from being too high or low.
+     * @param evt - ActionEvent from changing the spinner. Holds info about the source and more.
+     */
     private void playerSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_playerSpinnerStateChanged
         // TODO add your handling code here:
         Integer playerVal = (Integer)(playerSpinner.getValue());
@@ -235,6 +270,10 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_playerSpinnerStateChanged
 
+    /**
+     * This method is called when the questionSpinner value changes. It is used to prevent the number of questions from being too high or low.
+     * @param evt - ActionEvent from changing the spinner. Holds info about the source and more.
+     */
     private void questionSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_questionSpinnerStateChanged
         // TODO add your handling code here:
         Integer numQs = (Integer)(questionSpinner.getValue());
@@ -245,6 +284,11 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_questionSpinnerStateChanged
 
+    /**
+     * This method is called when the pointSpinner value changes.
+     * It is used to prevent the amount of points needed to win from being too high or low.
+     * @param evt - ActionEvent from changing the spinner. Holds info about the source and more.
+     */
     private void pointSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pointSpinnerStateChanged
         // TODO add your handling code here:
         Integer points = (Integer)(pointSpinner.getValue());
@@ -255,6 +299,11 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_pointSpinnerStateChanged
 
+    /**
+     * This method is called when the multipleCategory button is pressed. It is used to call the MainMenuNB component to
+     * remove this component, and to add the CategorySelector component.
+     * @param evt - ActionEvent from hitting the multipleCategory button. Holds info about the source and more.
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         mmnb.makeCategoryMenu(this);
@@ -278,7 +327,10 @@ public class LobbySettingsNB extends javax.swing.JPanel {
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
     private MainMenuNB mmnb;
-    
+
+    /**
+     * This method removes all of the components on this form. It is called when the open lobby button is pressed.
+     */
     private void removeCustomComponents(){
         this.remove(categoryField);
         this.remove(categoryLabel);
@@ -295,7 +347,13 @@ public class LobbySettingsNB extends javax.swing.JPanel {
 
             
     }
-    
+
+    /**
+     * This method is called when the multiple Categories menu is closed. If any categories were selected,
+     * the categoryField will be populated with those categories, and it will be set to be uneditable.
+     * This method is called from within the MainMenuNB component.
+     * @param categories - A set of categories held as Strings.
+     */
     public void multipleCategories(Set<String> categories){
         StringBuilder holder = new StringBuilder("");
         for(String s : categories){
@@ -307,6 +365,11 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         categoryField.setEnabled(false);
     }
 
+    /**
+     * This method is called when the multiple Categories menu is closed. If no categories were selected,
+     * the category field will be set to an empty string, and it will be set to be editable.
+     * This method is called from within the MainMenuNB component.
+     */
     public void notMultipleCategories(){
         categoryField.setText("");
         categoryField.setEnabled(true);

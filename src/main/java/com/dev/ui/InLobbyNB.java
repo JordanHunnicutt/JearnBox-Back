@@ -18,8 +18,17 @@ import java.util.List;
  */
 public class InLobbyNB extends javax.swing.JPanel {
 
+    /**
+     * This field is used to make this class a singleton, so information can be passed from the MessageHandling controller.
+     */
     private static InLobbyNB instance = null;
 
+    /**
+     * This method returns an instance of the class, and makes a new one if it does not already exist.
+     * @param settings - A Settings object. Contains settings created from the LobbySettingsNB component.
+     * @param mmnb - The MainMenuNB component. Used to remove this component later.
+     * @return - an instance of InLobbyNB.
+     */
     public static InLobbyNB getInLobbyInstance(Settings settings, MainMenuNB mmnb){
         if(instance == null){
             instance = new InLobbyNB(settings, mmnb);
@@ -27,6 +36,10 @@ public class InLobbyNB extends javax.swing.JPanel {
         return instance;
     }
 
+    /**
+     * This method returns an instance of the class, and makes a new one if it does not already exist.
+     * @return - an instance of InLobbyNB.
+     */
     public static InLobbyNB getInLobbyInstance(){
         if(instance == null){
             instance = new InLobbyNB();
@@ -34,11 +47,20 @@ public class InLobbyNB extends javax.swing.JPanel {
         return instance;
     }
 
+    /**
+     * This method is used to make an integer out of the roomCodeValue text, and pass it along.
+     * @return - value, the room code, as an Integer.
+     */
     public Integer getRoomCodeValue(){
         Integer value = Integer.parseInt(roomCodeValue.getText());
         return value;
     }
 
+    /**
+     * This method is used to add a Player to a List of players, and to display
+     * the player's name in a UI component. This method gets called from the MessageHandling controller.
+     * @param p - The player passed in.
+     */
     public void addPlayer(Player p){
         DefaultListModel dml = new DefaultListModel();
         if(players.size() < heldSettings.getPlayerCount()) {
@@ -56,7 +78,13 @@ public class InLobbyNB extends javax.swing.JPanel {
     public InLobbyNB() {
         initComponents();
     }
-    
+
+    /**
+     * This constructor renders the inner components of the InLobbyNB component, generates a room code,
+     * and adjusts the displayed settings from LobbySettingsNB.
+     * @param settings - A settings object. Created by LobbySettingsNB.
+     * @param mmnb - The MainMenuNB component. Used to remove this component later.
+     */
     public InLobbyNB(Settings settings, MainMenuNB mmnb){
         initComponents();
         
@@ -219,12 +247,21 @@ public class InLobbyNB extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This method hides the room code when you don't want players to join. It is called when the room code button is pressed.
+     * @param evt - ActionEvent created when the room code button is pressed. Holds info about the source and more.
+     */
     private void roomCodeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomCodeButtonActionPerformed
         // TODO add your handling code here:
         //hide room code or unhide it
         roomCodeValue.setVisible(!roomCodeValue.isVisible());
     }//GEN-LAST:event_roomCodeButtonActionPerformed
 
+    /**
+     * This method starts the game when the Start Game button is pressed. It calls the MainMenuNB component to remove this component and
+     * to add the GameplayNB component, and it passes along the Settings object.
+     * @param evt - ActionEvent created when the Start Game button is pressed. Holds info about the source and more.
+     */
     private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
         // TODO add your handling code here:
         //start the game
@@ -250,11 +287,19 @@ public class InLobbyNB extends javax.swing.JPanel {
     private Settings heldSettings;
     private MainMenuNB mmnb;
     private List<Player> players = new ArrayList<>();
-    
+
+    /**
+     * This method returns the roomCode as a String.
+     * @return
+     */
     public String getRoomCode(){
         return roomCodeValue.getText();
     }
-    
+
+    /**
+     * This method returns the list of players in the lobby.
+     * @return
+     */
     public List<Player> getPlayers(){
         return players;
     }
