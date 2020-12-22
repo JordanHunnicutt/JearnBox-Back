@@ -6,7 +6,6 @@
 package com.dev.ui;
 
 import java.awt.Component;
-import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 import com.dev.model.Settings;
@@ -81,12 +80,16 @@ public class MainMenuNB extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This is the newGameButtonActionPerformed method. It removes the title and button component and
+     * adds the LobbySettingsNB component.
+     * @param evt - The action event of clicking the button. Holds information about the action and its source.
+     */
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
         // TODO add your handling code here:
         //go to next menu
         this.remove(titleLabel);
         this.remove(newGameButton);
-        System.out.println("removed");
         LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this);
         this.setContentPane(lsnb);
         lsnb.setVisible(true);
@@ -95,6 +98,12 @@ public class MainMenuNB extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_newGameButtonActionPerformed
 
+    /**
+     * This is the makeInLobbyMenu method. It is called by the LobbySettingsNB class, and it is used
+     * to remove the LobbySettingsNB component, and to add the InLobbyNB component.
+     * @param lsnb - LobbySettingsNB component. Calls this method, and passes itself in so it can be removed.
+     * @param settings - A settings object made from the settings set using the LobbySettingsNB component. Passed to the InLobbyNB component.
+     */
     public void makeInLobbyMenu(LobbySettingsNB lsnb, Settings settings){
         this.remove(lsnb);
         InLobbyNB ilnb = InLobbyNB.getInLobbyInstance(settings, this);
@@ -106,7 +115,13 @@ public class MainMenuNB extends javax.swing.JFrame {
         this.revalidate();
         this.repaint();
     }
-    
+
+    /**
+     * This is the makeInGameMenu method. It is called by the InLobbyNB class, and it is used to
+     * remove the InLobbyNB component, and to add the GameplayNB component.
+     * @param ilnb - InLobbyNB component. Calls this method, and passes itself in so it can be removed.
+     * @param settings - A settings object made from the settings set using the LobbySettingsNB component. Passed to the GameplayNB component.
+     */
     public void makeInGameMenu(InLobbyNB ilnb, Settings settings){
         this.remove(ilnb);
         GameplayNB gnb = new GameplayNB(settings, ilnb.getRoomCode(), ilnb.getPlayers());
@@ -124,7 +139,12 @@ public class MainMenuNB extends javax.swing.JFrame {
             }
         });
     }
-    
+
+    /**
+     * This is the makeCategoryMenu method. It is called by the LobbySettingsNB class, and it is used to
+     * remove the LobbySettingsNB component, and to add the CategorySelector component.
+     * @param lsnb - LobbySettingsNB component. Calls this method, and passes itself in so it can be removed.
+     */
     public void makeCategoryMenu(LobbySettingsNB lsnb){
         this.remove(lsnb);
         CategorySelector cs = new CategorySelector(this);
@@ -136,12 +156,19 @@ public class MainMenuNB extends javax.swing.JFrame {
         this.revalidate();
         this.repaint();
     }
-    
+
+    /**
+     * This is the backToLobbySettings method. It is called by the CategorySelector class, and it is used to
+     * remove the CategorySelector component, and to add the LobbySettingsNB component.
+     * @param cs - CategorySelector compoonent. Calls this method, and passes itself in so it can be removed.
+     */
     public void backToLobbySettings(CategorySelector cs){
         this.remove(cs);
         LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this);
         if(!cs.getSelectedCategories().isEmpty()){
             lsnb.multipleCategories(cs.getSelectedCategories());
+        } else {
+            lsnb.notMultipleCategories();
         }
         this.setContentPane(lsnb);
         lsnb.setVisible(true);
@@ -179,11 +206,9 @@ public class MainMenuNB extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        System.out.println("main ran");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                System.out.println("run ran");
                 new MainMenuNB().setVisible(true);
             }
         });

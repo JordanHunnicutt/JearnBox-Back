@@ -9,15 +9,11 @@ import com.dev.model.SingleResponseQuestion;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicButtonListener;
 
 /**
  *
