@@ -296,5 +296,11 @@ public class LobbySettingsNB extends javax.swing.JPanel {
         categoryField.setText(holder.toString());
         categoryField.setEnabled(false);
     }
+
+    public void notMultipleCategories(){
+        categoryField.setText("");
+        categoryField.setEnabled(true);
+    }
+
 }
 

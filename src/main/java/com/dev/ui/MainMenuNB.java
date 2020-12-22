@@ -142,6 +142,8 @@ public class MainMenuNB extends javax.swing.JFrame {
         LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this);
         if(!cs.getSelectedCategories().isEmpty()){
             lsnb.multipleCategories(cs.getSelectedCategories());
+        } else {
+            lsnb.notMultipleCategories();
         }
         this.setContentPane(lsnb);
         lsnb.setVisible(true);
