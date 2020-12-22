@@ -5,7 +5,6 @@
  */
 package com.dev.ui;
 
-import java.awt.Component;
 import com.dev.model.Settings;
 import java.util.Set;
 /**
@@ -21,8 +20,19 @@ public class LobbySettingsNB extends javax.swing.JPanel {
             instance = new LobbySettingsNB(mmnb);
         }
         return instance;
-    }    
-    
+    }
+
+    public static LobbySettingsNB getLobbySettingsInstance(){
+        if(instance == null){
+            instance = new LobbySettingsNB();
+        }
+        return instance;
+    }
+
+    public static void killInstance(){
+        instance = null;
+    }
+
     /**
      * Creates new form LobbySettingsNB
      */

@@ -6,7 +6,6 @@
 package com.dev.ui;
 
 import java.awt.Component;
-import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 import com.dev.model.Settings;
