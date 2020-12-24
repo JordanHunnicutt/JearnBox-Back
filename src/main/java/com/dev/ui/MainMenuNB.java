@@ -6,9 +6,11 @@
 package com.dev.ui;
 
 import java.awt.Component;
+import java.util.List;
 import javax.swing.*;
 
 import com.dev.model.Settings;
+import com.dev.model.SingleResponseQuestion;
 
 /**
  *
@@ -22,6 +24,12 @@ public class MainMenuNB extends javax.swing.JFrame {
     public MainMenuNB() {
         initComponents();
         this.setResizable(false);
+    }
+
+    public MainMenuNB(List<SingleResponseQuestion> allQuestions){
+        initComponents();
+        this.setResizable(false);
+        this.allQuestions = allQuestions;
     }
 
     /**
@@ -90,7 +98,7 @@ public class MainMenuNB extends javax.swing.JFrame {
         //go to next menu
         this.remove(titleLabel);
         this.remove(newGameButton);
-        LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this);
+        LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this, allQuestions);
         this.setContentPane(lsnb);
         lsnb.setVisible(true);
         for(Component c : lsnb.getComponents()){
@@ -106,7 +114,7 @@ public class MainMenuNB extends javax.swing.JFrame {
      */
     public void makeInLobbyMenu(LobbySettingsNB lsnb, Settings settings){
         this.remove(lsnb);
-        InLobbyNB ilnb = InLobbyNB.getInLobbyInstance(settings, this);
+        InLobbyNB ilnb = InLobbyNB.getInLobbyInstance(settings, this, allQuestions);
         this.setContentPane(ilnb);
         ilnb.setVisible(true);
         for(Component c : ilnb.getComponents()){
@@ -124,7 +132,7 @@ public class MainMenuNB extends javax.swing.JFrame {
      */
     public void makeInGameMenu(InLobbyNB ilnb, Settings settings){
         this.remove(ilnb);
-        GameplayNB gnb = new GameplayNB(settings, ilnb.getRoomCode(), ilnb.getPlayers());
+        GameplayNB gnb = new GameplayNB(settings, ilnb.getRoomCode(), ilnb.getPlayers(), ilnb.getQuestions());
         this.setContentPane(gnb);
         gnb.setVisible(true);
         for(Component c : gnb.getComponents()){
@@ -147,7 +155,7 @@ public class MainMenuNB extends javax.swing.JFrame {
      */
     public void makeCategoryMenu(LobbySettingsNB lsnb){
         this.remove(lsnb);
-        CategorySelector cs = new CategorySelector(this);
+        CategorySelector cs = new CategorySelector(this, allQuestions);
         this.setContentPane(cs);
         cs.setVisible(true);
         for(Component c : cs.getComponents()){
@@ -164,7 +172,7 @@ public class MainMenuNB extends javax.swing.JFrame {
      */
     public void backToLobbySettings(CategorySelector cs){
         this.remove(cs);
-        LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this);
+        LobbySettingsNB lsnb = LobbySettingsNB.getLobbySettingsInstance(this, allQuestions);
         if(!cs.getSelectedCategories().isEmpty()){
             lsnb.multipleCategories(cs.getSelectedCategories());
         } else {
@@ -209,7 +217,7 @@ public class MainMenuNB extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainMenuNB().setVisible(true);
+                new MainMenuNB(allQuestions).setVisible(true);
             }
         });
     }
@@ -218,4 +226,7 @@ public class MainMenuNB extends javax.swing.JFrame {
     private javax.swing.JButton newGameButton;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    private static List<SingleResponseQuestion> allQuestions;
+
 }

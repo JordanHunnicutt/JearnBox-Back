@@ -8,6 +8,10 @@ package com.dev.ui;
 import com.dev.model.Player;
 import com.dev.model.Settings;
 import com.dev.model.SingleResponseQuestion;
+import org.springframework.messaging.simp.stomp.DefaultStompSession;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +37,13 @@ public class GameplayNB extends javax.swing.JPanel {
      * @param roomCode
      * @param players
      */
-    public GameplayNB(Settings settings, String roomCode, List<Player> players) {
+    public GameplayNB(Settings settings, String roomCode, List<Player> players, List<SingleResponseQuestion> selectedQuestions) {
         initComponents();
         heldSettings = settings;
         heldPlayers = players;
         roomCodeValue.setText(roomCode);
+        questionList = selectedQuestions;
+        unusedQuestions.addAll(questionList);
         DefaultListModel dml = new DefaultListModel();
         if (!players.isEmpty()) {
             for (Player p : players) {
@@ -85,7 +91,15 @@ public class GameplayNB extends javax.swing.JPanel {
      * @return - a string holding the question text
      */
     public String printQuestion() {
-        String q = "This is a test to see how long we can make the question with it still showing everything on screen";
+        if(unusedQuestions.size() == 0){ //reset the unused questions if every question was asked
+            unusedQuestions.addAll(questionList);
+        }
+        //use math.random to select a random question
+        String indexString = String.valueOf(Math.round(Math.random() * (unusedQuestions.size() - 1)));
+        int index = Integer.parseInt(indexString);
+        String q = unusedQuestions.get(index).getQuestion();
+        rightAnswer = unusedQuestions.get(index).getAnswer();
+        //make the question readable in the label field
         int questionLength = q.length();
         StringBuilder qWithLines = new StringBuilder("<html>");
         while(questionLength > 30){
@@ -96,6 +110,7 @@ public class GameplayNB extends javax.swing.JPanel {
         }
         qWithLines.append(q);
         qWithLines.append("</html>");
+        unusedQuestions.remove(index);
         return qWithLines.toString();
     }
 
@@ -105,7 +120,7 @@ public class GameplayNB extends javax.swing.JPanel {
      */
     public void showAnswer() {
         questionLabel.setText("The answer is: ");
-        timerLabel.setText("No");
+        timerLabel.setText(rightAnswer);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -313,4 +328,7 @@ public class GameplayNB extends javax.swing.JPanel {
     private Integer currentQNumber = 1;
     private Integer responsesReceived = 0;
     private List<SingleResponseQuestion> questionList = new ArrayList<>();
+    private List<SingleResponseQuestion> unusedQuestions = new ArrayList<>();
+    private String rightAnswer;
+
 }

@@ -29,11 +29,10 @@ public class CategorySelector extends javax.swing.JPanel {
      * actionListener to add a category to the Set<String> selectedCategories,
      * which will be passed to LobbySettingsNB later.
      */
-    public CategorySelector(MainMenuNB mmnb) {
+    public CategorySelector(MainMenuNB mmnb, List<SingleResponseQuestion> allQs) {
         initComponents();
         this.mmnb = mmnb;
-        allQs.add(new SingleResponseQuestion(2,"What does SQL stand for?", "Structured Query Language", "SQL"));
-        allQs.add(new SingleResponseQuestion(3,"What does POM stand for?", "Project Object Model", "POM"));
+        this.allQs = allQs;
         GridBagConstraints gbc = new GridBagConstraints();
         GridBagLayout gbl = new GridBagLayout();
         gbc.gridwidth = 0;
