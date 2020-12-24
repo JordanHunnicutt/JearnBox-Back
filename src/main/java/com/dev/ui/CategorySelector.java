@@ -23,13 +23,16 @@ public class CategorySelector extends javax.swing.JPanel {
     
     
     /**
-     * Creates new form CategorySelector
+     * Creates new form CategorySelector.
+     * This constructor (will grab) the questions from the database and gets the categories of each one
+     * and puts them in a set. Additionally, JCheckBoxes are created for each category, and each is assigned an
+     * actionListener to add a category to the Set<String> selectedCategories,
+     * which will be passed to LobbySettingsNB later.
      */
-    public CategorySelector(MainMenuNB mmnb) {
+    public CategorySelector(MainMenuNB mmnb, List<SingleResponseQuestion> allQs) {
         initComponents();
         this.mmnb = mmnb;
-        allQs.add(new SingleResponseQuestion(2,"What does SQL stand for?", "Structured Query Language", "SQL"));
-        allQs.add(new SingleResponseQuestion(3,"What does POM stand for?", "Project Object Model", "POM"));
+        this.allQs = allQs;
         GridBagConstraints gbc = new GridBagConstraints();
         GridBagLayout gbl = new GridBagLayout();
         gbc.gridwidth = 0;
@@ -47,14 +50,10 @@ public class CategorySelector extends javax.swing.JPanel {
                     String category = jcb.getText();
                     public void actionPerformed(ActionEvent e){
                         if(!selectedCategories.contains(category)){
-                            System.out.println("Does not contain category");
                             selectedCategories.add(category);
                         } else {
-                            System.out.println("Does contain category");
                             selectedCategories.remove(category);
                         }
-                        System.out.println(selectedCategories);
-                        System.out.println(category);
                     }
                 });
                 internalPanel.add(jcb, gbc);
@@ -130,6 +129,11 @@ public class CategorySelector extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This method is called when the SettingsButton is pressed. It calls a method in the MainMenuNB component
+     * to remove this component and add the LobbySettingsNB component.
+     * @param evt
+     */
     private void SettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsButtonActionPerformed
         // TODO add your handling code here:
         
@@ -147,7 +151,11 @@ public class CategorySelector extends javax.swing.JPanel {
     private List<SingleResponseQuestion> allQs = new ArrayList<>();
     private Set<String> allCategories = new HashSet<>();
     private Set<String> selectedCategories = new HashSet<>();
-    
+
+    /**
+     * This method returns a set of strings holding the selected categories.
+     * @return - a set of strings holding the selected categories
+     */
     public Set<String> getSelectedCategories(){
         return selectedCategories;
     }

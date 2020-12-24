@@ -6,6 +6,9 @@
 package com.dev.ui;
 
 import com.dev.model.Settings;
+import com.dev.model.SingleResponseQuestion;
+
+import java.util.List;
 import java.util.Set;
 /**
  *
@@ -23,9 +26,9 @@ public class LobbySettingsNB extends javax.swing.JPanel {
      * @param mmnb - MainMenuNB component. Used to call methods to remove this component.
      * @return - an instance of LobbySettingsNB
      */
-    public static LobbySettingsNB getLobbySettingsInstance(MainMenuNB mmnb){
+    public static LobbySettingsNB getLobbySettingsInstance(MainMenuNB mmnb, List<SingleResponseQuestion> alLQuestions){
         if(instance == null){
-            instance = new LobbySettingsNB(mmnb);
+            instance = new LobbySettingsNB(mmnb, alLQuestions);
         }
         return instance;
     }
@@ -65,13 +68,14 @@ public class LobbySettingsNB extends javax.swing.JPanel {
      * Creates new form LobbySettingsNB
      * @param mmnb - MainMenuNB component. Used to remove this form later.
      */
-    private LobbySettingsNB(MainMenuNB mmnb) {
+    private LobbySettingsNB(MainMenuNB mmnb, List<SingleResponseQuestion> allQuestions) {
         initComponents();
         timeSpinner.setValue(30);
         playerSpinner.setValue(1);
         questionSpinner.setValue(10);
         pointSpinner.setValue(1000);
         this.mmnb = mmnb;
+        this.alLQuestions = allQuestions;
     }
 
     /**
@@ -327,6 +331,7 @@ public class LobbySettingsNB extends javax.swing.JPanel {
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
     private MainMenuNB mmnb;
+    private List<SingleResponseQuestion> alLQuestions;
 
     /**
      * This method removes all of the components on this form. It is called when the open lobby button is pressed.

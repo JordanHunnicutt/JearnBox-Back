@@ -8,6 +8,10 @@ package com.dev.ui;
 import com.dev.model.Player;
 import com.dev.model.Settings;
 import com.dev.model.SingleResponseQuestion;
+import org.springframework.messaging.simp.stomp.DefaultStompSession;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +30,20 @@ public class GameplayNB extends javax.swing.JPanel {
         initComponents();
     }
 
-    public GameplayNB(Settings settings, String roomCode, List<Player> players) {
+    /**
+     * This constructor is used to set values of different components on the page, including
+     * the list of players, the room code, and the timer for questions.
+     * @param settings
+     * @param roomCode
+     * @param players
+     */
+    public GameplayNB(Settings settings, String roomCode, List<Player> players, List<SingleResponseQuestion> selectedQuestions) {
         initComponents();
         heldSettings = settings;
         heldPlayers = players;
         roomCodeValue.setText(roomCode);
+        questionList = selectedQuestions;
+        unusedQuestions.addAll(questionList);
         DefaultListModel dml = new DefaultListModel();
         if (!players.isEmpty()) {
             for (Player p : players) {
@@ -47,8 +60,12 @@ public class GameplayNB extends javax.swing.JPanel {
 
     }
 
+    /**
+     * This intro is called before each question begins. It gives everyone five seconds to prepare,
+     * then it calls the printQuestion method to get a new question, and it calls the countdownTimer
+     * method to start counting down the timer.
+     */
     public void intro() {
-        System.out.println("intro started");
         questionLabel.setText("Get ready for the next question!");
         timeValue = heldSettings.getTime();
         timerLabel.setText(heldSettings.getTime().toString());
@@ -60,7 +77,6 @@ public class GameplayNB extends javax.swing.JPanel {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("timer done");
                 questionLabel.setText(printQuestion());
                 countdownTimer();
             }
@@ -69,8 +85,21 @@ public class GameplayNB extends javax.swing.JPanel {
 
     }
 
+    /**
+     * This method is used to get a new question, and to format it for multiple lines
+     * using a StringBuilder.
+     * @return - a string holding the question text
+     */
     public String printQuestion() {
-        String q = "This is a test to see how long we can make the question with it still showing everything on screen";
+        if(unusedQuestions.size() == 0){ //reset the unused questions if every question was asked
+            unusedQuestions.addAll(questionList);
+        }
+        //use math.random to select a random question
+        String indexString = String.valueOf(Math.round(Math.random() * (unusedQuestions.size() - 1)));
+        int index = Integer.parseInt(indexString);
+        String q = unusedQuestions.get(index).getQuestion();
+        rightAnswer = unusedQuestions.get(index).getAnswer();
+        //make the question readable in the label field
         int questionLength = q.length();
         StringBuilder qWithLines = new StringBuilder("<html>");
         while(questionLength > 30){
@@ -81,13 +110,17 @@ public class GameplayNB extends javax.swing.JPanel {
         }
         qWithLines.append(q);
         qWithLines.append("</html>");
+        unusedQuestions.remove(index);
         return qWithLines.toString();
     }
 
-
+    /**
+     * This method displays the answer after the timer runs down. It shows the answer for 5 seconds,
+     * then either calls intro() again, or calls outro() if there are no more questions left.
+     */
     public void showAnswer() {
         questionLabel.setText("The answer is: ");
-        timerLabel.setText("No");
+        timerLabel.setText(rightAnswer);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -108,7 +141,11 @@ public class GameplayNB extends javax.swing.JPanel {
         });
     }
 
-
+    /**
+     * This method is called once all of the questions have been asked. It changes the question and timer text,
+     * then after 5 seconds, displays the winner of the game (right now, it only displays player1). It then calls
+     * the endApp method to close the application.
+     */
     public void outro() {
         questionLabel.setText("That was the last question!");
         timerLabel.setText("Tallying results...");
@@ -128,6 +165,9 @@ public class GameplayNB extends javax.swing.JPanel {
 
     }
 
+    /**
+     * This method waits 5 seconds after the winner has been revealed, then closes the application.
+     */
     public void endApp() {
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -143,6 +183,11 @@ public class GameplayNB extends javax.swing.JPanel {
         });
     }
 
+    /**
+     * This method changes the timer value every second. First, it checks to see if everyone has responded, and
+     * sets the timer to 0 if everyone has. Otherwise, it puts the thread to sleep for 1 second, reduces the timer
+     * by one, and either recalls the method, or calls showAnswer() if the timer is 0.
+     */
     public void countdownTimer() {
 
         if(responsesReceived >= heldPlayers.size()){
@@ -283,4 +328,7 @@ public class GameplayNB extends javax.swing.JPanel {
     private Integer currentQNumber = 1;
     private Integer responsesReceived = 0;
     private List<SingleResponseQuestion> questionList = new ArrayList<>();
+    private List<SingleResponseQuestion> unusedQuestions = new ArrayList<>();
+    private String rightAnswer;
+
 }

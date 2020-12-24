@@ -8,20 +8,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class Driver {
 
-        @Autowired
-        private QuestionController qc;
+	private static QuestionController qc;
+
+	private static ApplicationContext ac;
+
+	private static List<SingleResponseQuestion> qs;
     
 	public static void main(String[] args) {
-		SpringApplication.run(Driver.class, args);
+		ac = SpringApplication.run(Driver.class, args);
 		System.setProperty("java.awt.headless","false");
-		MainMenuNB mmnb = new MainMenuNB();
+		qc = ac.getBean(QuestionController.class);
+		try{
+			qs = qc.findAllQuestions();
+		} catch(NullPointerException e){
+			System.out.println("no questions found");
+		}
+
+		MainMenuNB mmnb = new MainMenuNB(qs);
 		mmnb.main(args);
 	}
 

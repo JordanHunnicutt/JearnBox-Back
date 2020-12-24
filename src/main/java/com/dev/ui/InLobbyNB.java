@@ -7,6 +7,7 @@ package com.dev.ui;
 
 import com.dev.model.Player;
 import com.dev.model.Settings;
+import com.dev.model.SingleResponseQuestion;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -29,9 +30,9 @@ public class InLobbyNB extends javax.swing.JPanel {
      * @param mmnb - The MainMenuNB component. Used to remove this component later.
      * @return - an instance of InLobbyNB.
      */
-    public static InLobbyNB getInLobbyInstance(Settings settings, MainMenuNB mmnb){
+    public static InLobbyNB getInLobbyInstance(Settings settings, MainMenuNB mmnb, List<SingleResponseQuestion> allQuestions){
         if(instance == null){
-            instance = new InLobbyNB(settings, mmnb);
+            instance = new InLobbyNB(settings, mmnb, allQuestions);
         }
         return instance;
     }
@@ -85,7 +86,7 @@ public class InLobbyNB extends javax.swing.JPanel {
      * @param settings - A settings object. Created by LobbySettingsNB.
      * @param mmnb - The MainMenuNB component. Used to remove this component later.
      */
-    public InLobbyNB(Settings settings, MainMenuNB mmnb){
+    public InLobbyNB(Settings settings, MainMenuNB mmnb, List<SingleResponseQuestion> allQuestions){
         initComponents();
         
         String randomCode = ((Integer)(Math.round(Math.round(Math.random() * 999999)))).toString();
@@ -106,6 +107,8 @@ public class InLobbyNB extends javax.swing.JPanel {
         numQuestionsLabel.setText(settings.getNumQuestions()+" Questions");
         timeLabel.setText(settings.getTime()+" seconds per question");
         pointsLabel.setText("Points to Win: "+settings.getPoints());
+        this.allQuestions = allQuestions;
+        sortQuestions();
     }
 
     /**
@@ -268,6 +271,54 @@ public class InLobbyNB extends javax.swing.JPanel {
         mmnb.makeInGameMenu(this, heldSettings);
     }//GEN-LAST:event_startGameButtonActionPerformed
 
+    /**
+     * This method sorts through the selected categories and picks out questions for those
+     * categories.
+     */
+    private void sortQuestions() {
+
+        String categoriesInHeld = heldSettings.getCategory().trim();
+        StringBuilder builtCats = new StringBuilder(categoriesInHeld);
+        List<String> catList = new ArrayList<>();
+
+        //If the category is All, give all the questions
+        if (categoriesInHeld == "All") {
+            selectedQuestions = allQuestions;
+        } else if (builtCats.toString().contains(",")) { //if the category contains a ",", there are multiple categories to check
+            while (builtCats.toString().contains(",")) { //this loop checks all of the categories beside the last
+                int x = categoriesInHeld.indexOf(",");
+                catList.add(builtCats.substring(0, (x - 1)));
+                builtCats.delete(0, x);
+                int y = builtCats.indexOf(" ");
+                if (y != -1) {
+                    builtCats.delete(0, y);
+                }
+                for (SingleResponseQuestion q : allQuestions) {
+                    if (catList.contains(q.getCategory())) {
+                        selectedQuestions.add(q);
+                    }
+                }
+            }
+            //this runs after every "," has been removed
+            catList.add(builtCats.toString());
+            for(SingleResponseQuestion q : allQuestions){
+                if (catList.contains(q.getCategory())) {
+                    selectedQuestions.add(q);
+                }
+            }
+        }else { //if there is only a single category, and it isn't all
+            for(SingleResponseQuestion q : allQuestions){ //if the category exists in the questions, add the questions
+                if(q.getCategory() == categoriesInHeld){
+                    selectedQuestions.add(q);
+                }
+            }
+            if(selectedQuestions.isEmpty()){ //if no questions matched the category, select all questions instead
+                categoryLabel.setText("Category: All");
+                selectedQuestions = allQuestions;
+            }
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel categoryLabel;
@@ -287,6 +338,8 @@ public class InLobbyNB extends javax.swing.JPanel {
     private Settings heldSettings;
     private MainMenuNB mmnb;
     private List<Player> players = new ArrayList<>();
+    private List<SingleResponseQuestion> allQuestions = new ArrayList<>();
+    private List<SingleResponseQuestion> selectedQuestions = new ArrayList<>();
 
     /**
      * This method returns the roomCode as a String.
@@ -303,5 +356,13 @@ public class InLobbyNB extends javax.swing.JPanel {
     public List<Player> getPlayers(){
         return players;
     }
-    
+
+    /**
+     * This method returns the selected questions based on the categories.
+     * @return
+     */
+    public List<SingleResponseQuestion> getQuestions(){
+        return selectedQuestions;
+    }
+
 }
